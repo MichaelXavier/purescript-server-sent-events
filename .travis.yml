@@ -3,6 +3,7 @@ node_js:
   - "stable"
 before_install:
   - npm install -g bower pulp purescript
+  - bower install
 script:
   - npm test
 sudo: false
