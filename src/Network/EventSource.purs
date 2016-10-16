@@ -76,7 +76,7 @@ instance eqReadyState :: Eq ReadyState where
 
 -------------------------------------------------------------------------------
 readyState :: EventSource -> ReadyState
-readyState (EventSource target) = case readyStateImpl target of
+readyState (EventSource target) = case runFn1 readyStateImpl target of
   0 -> CONNECTING
   1 -> OPEN
   2 -> CLOSED
@@ -85,7 +85,7 @@ readyState (EventSource target) = case readyStateImpl target of
 
 -------------------------------------------------------------------------------
 url :: EventSource -> URL
-url (EventSource target) = URL (urlImpl target)
+url (EventSource target) = URL (runFn1 urlImpl target)
 
 
 -------------------------------------------------------------------------------
