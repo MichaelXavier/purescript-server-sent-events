@@ -6,20 +6,23 @@ module Main
 
 -------------------------------------------------------------------------------
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, log)
+import Control.Monad.Eff.Console (logShow, CONSOLE, log)
+import DOM (DOM)
 import DOM.Event.Event (Event)
+import DOM.Event.EventTarget (eventListener)
 import Data.Maybe (Maybe(Nothing))
-import Network.EventSource (EVENTSOURCE, URL(URL), eventData, setOnMessage, newEventSource)
+import Network.EventSource (URL(URL), eventData, readyState, setOnMessage, newEventSource)
 import Prelude ((<<<), Unit, bind)
 -------------------------------------------------------------------------------
 
 
-main :: forall eff. Eff (eventsource :: EVENTSOURCE | eff) Unit
+main :: forall eff. Eff (dom :: DOM, console :: CONSOLE | eff) Unit
 main = do
   es <- newEventSource (URL "/stream") Nothing
-  setOnMessage es handler
+  logShow (readyState es)
+  setOnMessage es (eventListener handler)
 
 
 -------------------------------------------------------------------------------
-handler :: forall eff. Event -> Eff (console :: CONSOLE | eff) Unit
+handler :: forall eff. Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
 handler = log <<< eventData

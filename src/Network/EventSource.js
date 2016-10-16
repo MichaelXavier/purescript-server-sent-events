@@ -22,6 +22,18 @@ exports.setOnMessageImpl = function(eventSource, handler) {
   };
 };
 
+exports.setOnOpenImpl = function(eventSource, handler) {
+  return function() {
+    eventSource.onopen = function(e) {
+      handler(e)();
+    };
+  };
+};
+
 exports.eventDataImpl = function(event) {
   return event.data;
+};
+
+exports.readyStateImpl = function(target) {
+  return target.readyState;
 };
