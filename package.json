@@ -1,7 +1,7 @@
 {
   "name": "purescript-server-sent-events",
   "version": "0.0.0",
-  "description": "",
+  "description": "A purescript interface to the Server-Sent Events API (SSE).",
   "main": "server.js",
   "directories": {
     "test": "test"
