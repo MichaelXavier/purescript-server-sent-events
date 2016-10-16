@@ -16,9 +16,7 @@ exports.newEventSourceImpl2 = function(url, config) {
 
 exports.setOnMessageImpl = function(eventSource, handler) {
   return function() {
-    eventSource.onmessage = function(e) {
-      handler(e)();
-    };
+    eventSource.onmessage = handler;
   };
 };
 
