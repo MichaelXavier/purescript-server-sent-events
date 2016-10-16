@@ -1,0 +1,23 @@
+{
+  "name": "purescript-server-sent-events",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pulp build",
+    "example": "pulp build -I examples && pulp browserify --to output/index.js",
+    "watch_example": "pulp --watch --then \"pulp browserify --to output/index.js\" build -I examples",
+    "watch": "pulp --watch build",
+    "server": "node examples/server.js"
+  },
+  "author": "Michael Xavier",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "express-sse": "^0.3.1"
+  }
+}
