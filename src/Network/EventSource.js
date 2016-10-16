@@ -37,3 +37,7 @@ exports.eventDataImpl = function(event) {
 exports.readyStateImpl = function(target) {
   return target.readyState;
 };
+
+exports.urlImpl = function(target) {
+  return target.url;
+};

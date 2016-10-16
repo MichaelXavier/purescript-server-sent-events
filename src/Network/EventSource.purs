@@ -6,6 +6,7 @@ module Network.EventSource
     , setOnMessage
     , eventData
     , readyState
+    , url
     , EventSourceConfig(..)
     , EventSource
     , URL(..)
@@ -83,6 +84,11 @@ readyState (EventSource target) = case readyStateImpl target of
 
 
 -------------------------------------------------------------------------------
+url :: EventSource -> URL
+url (EventSource target) = URL (urlImpl target)
+
+
+-------------------------------------------------------------------------------
 newEventSource :: forall eff. URL -> Maybe EventSourceConfig -> Eff ( dom :: DOM | eff) EventSource
 newEventSource (URL s) Nothing = runFn1 newEventSourceImpl1 s
 newEventSource (URL s) (Just c) = runFn2 newEventSourceImpl2 s c
@@ -103,8 +109,6 @@ setOnOpen
     -> EventListener ( dom :: DOM | eff)
     -> Eff ( dom :: DOM | eff) Unit
 setOnOpen = runFn2 setOnOpenImpl
-
---TODO readyState and url
 
 
 -------------------------------------------------------------------------------
@@ -172,3 +176,7 @@ foreign import eventDataImpl :: Fn1 Event String
 
 -------------------------------------------------------------------------------
 foreign import readyStateImpl :: Fn1 EventTarget Int
+
+
+-------------------------------------------------------------------------------
+foreign import urlImpl :: Fn1 EventTarget String
