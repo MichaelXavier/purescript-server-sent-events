@@ -6,4 +6,5 @@ before_install:
   - bower install
 script:
   - npm test
+  - npm run-script example
 sudo: false
