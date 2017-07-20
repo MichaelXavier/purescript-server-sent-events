@@ -3,7 +3,9 @@ module Network.EventSource
     , addEventListener
     , removeEventListener
     , dispatchEvent
+    , setOnError
     , setOnMessage
+    , setOnOpen
     , eventData
     , readyState
     , url
@@ -21,7 +23,7 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import DOM (DOM)
 import DOM.Event.Event (Event)
-import DOM.Event.EventTarget (EventListener)
+import DOM.Event.EventTarget (EventListener, eventListener)
 import DOM.Event.Types (EventType, EventTarget)
 import Data.Function.Uncurried (runFn2, runFn1, Fn2, Fn1)
 import Data.Generic (class Generic, gShow)
@@ -82,20 +84,39 @@ newEventSource (URL s) (Just c) = runFn2 newEventSourceImpl2 s c
 
 
 -------------------------------------------------------------------------------
--- | Destructively overwrites the onmessage callback for the EventSource
-setOnMessage
+-- | Destructively overwrites the onerror callback for the EventSource
+setOnError
     :: forall eff. EventSource
-    -> EventListener ( dom :: DOM | eff)
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
     -> Eff ( dom :: DOM | eff) Unit
-setOnMessage = runFn2 setOnMessageImpl
+setOnError = cbHelper setOnErrorImpl
 
 
 -------------------------------------------------------------------------------
+-- | Destructively overwrites the onmessage callback for the EventSource
+setOnMessage
+    :: forall eff. EventSource
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
+    -> Eff ( dom :: DOM | eff) Unit
+setOnMessage = cbHelper setOnMessageImpl
+
+
+-------------------------------------------------------------------------------
+-- | Destructively overwrites the onopen callback for the EventSource
 setOnOpen
     :: forall eff. EventSource
-    -> EventListener ( dom :: DOM | eff)
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
     -> Eff ( dom :: DOM | eff) Unit
-setOnOpen = runFn2 setOnOpenImpl
+setOnOpen = cbHelper setOnOpenImpl
+
+
+-------------------------------------------------------------------------------
+cbHelper
+    :: forall eff. Fn2 EventSource (EventListener (dom :: DOM | eff)) (Eff ( dom :: DOM | eff) Unit)
+    -> EventSource
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
+    -> Eff ( dom :: DOM | eff) Unit
+cbHelper cb es l= runFn2 cb es (eventListener l)
 
 
 -------------------------------------------------------------------------------
@@ -103,13 +124,13 @@ setOnOpen = runFn2 setOnOpenImpl
 -- domain-specific type of event sent from the server.
 addEventListener
     :: forall eff. EventType
-    -> EventListener (dom :: DOM | eff)
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
     -> Boolean
     -- ^ Indicates whether the listener should be added for the "capture" phase.
     -> EventSource
     -> Eff (dom :: DOM | eff) Unit
 addEventListener ty l useCapture (EventSource target) =
-  ET.addEventListener ty l useCapture target
+  ET.addEventListener ty (eventListener l) useCapture target
 
 
 -------------------------------------------------------------------------------
@@ -117,13 +138,13 @@ addEventListener ty l useCapture (EventSource target) =
 -- domain-specific type of event sent from the server.
 removeEventListener
     :: forall eff. EventType
-    -> EventListener (dom :: DOM | eff)
+    -> (Event -> Eff (dom :: DOM | eff) Unit)
     -> Boolean
     -- ^ Indicates whether the listener should be added for the "capture" phase.
     -> EventSource
     -> Eff (dom :: DOM | eff) Unit
 removeEventListener ty l useCapture (EventSource target) =
-  ET.removeEventListener ty l useCapture target
+  ET.removeEventListener ty (eventListener l) useCapture target
 
 
 -------------------------------------------------------------------------------
@@ -150,6 +171,10 @@ foreign import newEventSourceImpl1 :: forall eff. Fn1 String (Eff ( dom :: DOM |
 
 -------------------------------------------------------------------------------
 foreign import newEventSourceImpl2 :: forall eff. Fn2 String EventSourceConfig (Eff ( dom :: DOM | eff) EventSource)
+
+
+-------------------------------------------------------------------------------
+foreign import setOnErrorImpl :: forall eff. Fn2 EventSource (EventListener (dom :: DOM | eff)) (Eff ( dom :: DOM | eff) Unit)
 
 
 -------------------------------------------------------------------------------
