@@ -24,12 +24,9 @@ import DOM.Event.Event (Event)
 import DOM.Event.EventTarget (EventListener)
 import DOM.Event.Types (EventType, EventTarget)
 import Data.Function.Uncurried (runFn2, runFn1, Fn2, Fn1)
-import Data.Generic (class Generic, gEq, gShow)
+import Data.Generic (class Generic, gShow)
 import Data.Maybe (Maybe(Just, Nothing))
-import Data.Monoid ((<>))
-import Partial (crashWith)
-import Partial.Unsafe (unsafePartial)
-import Prelude (show, class Eq, class Show, Unit)
+import Prelude (class Eq, class Show, Unit)
 -------------------------------------------------------------------------------
 
 
@@ -54,26 +51,23 @@ derive newtype instance eqURL :: Eq URL
 data ReadyState = CONNECTING
                 | OPEN
                 | CLOSED
-
+                | UNKNOWN
 
 derive instance genericReadyState :: Generic ReadyState
-
+derive instance eqReadyState :: Eq ReadyState
 
 instance showReadyState :: Show ReadyState where
   show = gShow
 
 
-instance eqReadyState :: Eq ReadyState where
-  eq = gEq
-
-
 -------------------------------------------------------------------------------
+-- | Use UNKNOWN for any unexpected response.
 readyState :: EventSource -> ReadyState
 readyState (EventSource target) = case runFn1 readyStateImpl target of
   0 -> CONNECTING
   1 -> OPEN
   2 -> CLOSED
-  n -> unsafePartial (crashWith ("Invalid EventSource code " <> show n <> ". Valid values are 0,1, and 2."))
+  _ -> UNKNOWN
 
 
 -------------------------------------------------------------------------------
@@ -146,6 +140,7 @@ dispatchEvent e (EventSource target) = ET.dispatchEvent e target
 eventData :: Event -> String
 eventData = runFn1 eventDataImpl
 
+-- | Close the event source connection.
 close :: forall eff. EventSource -> Eff (dom :: DOM | eff) Unit
 close = runFn1 closeImpl
 
