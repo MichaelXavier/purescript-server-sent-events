@@ -46,16 +46,8 @@ type EventSourceConfig = {
 -------------------------------------------------------------------------------
 newtype URL = URL String
 
-
-derive instance genericURL :: Generic URL
-
-
-instance showURL :: Show URL where
-  show = gShow
-
-
-instance eqURL :: Eq URL where
-  eq = gEq
+derive newtype instance showURL :: Show URL
+derive newtype instance eqURL :: Eq URL
 
 
 -------------------------------------------------------------------------------
