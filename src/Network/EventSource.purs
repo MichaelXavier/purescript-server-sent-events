@@ -7,6 +7,7 @@ module Network.EventSource
     , eventData
     , readyState
     , url
+    , close
     , EventSourceConfig(..)
     , EventSource
     , URL(..)
@@ -153,6 +154,8 @@ dispatchEvent e (EventSource target) = ET.dispatchEvent e target
 eventData :: Event -> String
 eventData = runFn1 eventDataImpl
 
+close :: forall eff. EventSource -> Eff (dom :: DOM | eff) Unit
+close = runFn1 closeImpl
 
 -------------------------------------------------------------------------------
 foreign import newEventSourceImpl1 :: forall eff. Fn1 String (Eff ( dom :: DOM | eff) EventSource)
@@ -180,3 +183,7 @@ foreign import readyStateImpl :: Fn1 EventTarget Int
 
 -------------------------------------------------------------------------------
 foreign import urlImpl :: Fn1 EventTarget String
+
+
+-------------------------------------------------------------------------------
+foreign import closeImpl :: forall eff. Fn1 EventSource (Eff ( dom :: DOM | eff) Unit)

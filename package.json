@@ -18,6 +18,8 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "express-sse": "^0.3.2"
+    "express": "^4.15.3",
+    "express-sse": "^0.4.1",
+    "body-parser": "^1.17.2"
   }
 }
