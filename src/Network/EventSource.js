@@ -14,6 +14,13 @@ exports.newEventSourceImpl2 = function(url, config) {
 };
 
 
+exports.setOnErrorImpl = function(eventSource, handler) {
+  return function() {
+    eventSource.onerror = handler;
+  };
+};
+
+
 exports.setOnMessageImpl = function(eventSource, handler) {
   return function() {
     eventSource.onmessage = handler;
@@ -22,9 +29,7 @@ exports.setOnMessageImpl = function(eventSource, handler) {
 
 exports.setOnOpenImpl = function(eventSource, handler) {
   return function() {
-    eventSource.onopen = function(e) {
-      handler(e)();
-    };
+    eventSource.onopen = handler;
   };
 };
 

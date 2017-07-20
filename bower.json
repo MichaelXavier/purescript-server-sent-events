@@ -1,8 +1,10 @@
 {
   "name": "purescript-server-sent-events",
+  "homepage": "https://github.com/MichaelXavier/purescript-server-sent-events",
   "description": "A purescript interface to the Server-Sent Events API (SSE).",
   "authors": [
-    "Michael Xavier <michael@michaelxavier.net>"
+    "Michael Xavier <michael@michaelxavier.net>",
+    "Mikkel Christiansen <mikkel@rheosystems.com>"
   ],
   "license": "MIT",
   "keywords": [
@@ -10,6 +12,10 @@
     "sse",
     "server-sent-events"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/MichaelXavier/purescript-server-sent-events.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
@@ -20,11 +26,10 @@
     "purescript-functions": "^3.0.0",
     "purescript-maybe": "^3.0.0",
     "purescript-dom": "^4.5.0",
-    "purescript-prelude": "^3.1.0",
-    "purescript-console": "^3.0.0",
-    "purescript-partial": "^1.2.1"
+    "purescript-prelude": "^3.1.0"
   },
   "devDependencies": {
+    "purescript-console": "^3.0.0",
     "purescript-psci-support": "^3.0.0"
   }
 }
