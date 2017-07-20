@@ -14,7 +14,7 @@ import DOM.Event.Types (EventType(EventType))
 import Data.Maybe (Maybe(Nothing))
 import Data.Tuple (Tuple(Tuple))
 import Network.EventSource (addEventListener, URL(URL), eventData, readyState, setOnMessage, newEventSource, url)
-import Prelude ((<<<), Unit, bind)
+import Prelude (Unit, bind, discard)
 -------------------------------------------------------------------------------
 
 
