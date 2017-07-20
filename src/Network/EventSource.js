@@ -39,3 +39,9 @@ exports.readyStateImpl = function(target) {
 exports.urlImpl = function(target) {
   return target.url;
 };
+
+exports.closeImpl = function(eventSource) {
+  return function() {
+    eventSource.close()
+  };
+};
