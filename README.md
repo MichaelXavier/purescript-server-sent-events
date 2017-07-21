@@ -1,36 +1,28 @@
-purescript-server-sent-events
-=============================
+# purescript-server-sent-events
 
-A Purescript library for server sent events (SSE).
+[![Latest release](http://img.shields.io/github/release/MichaelXavier/purescript-server-sent-events.svg)](https://github.com/MichaelXavier/purescript-server-sent-events/releases)
+
+A purescript interface to the Server-Sent Events API (SSE).
 
 
-Run the Example
----------------
+## Getting Started
 
-This requires `npm`, `bower` and a working installation of
-Purescript. It will compile the Purescript code in `example/Main.purs`
-and start a server with a SSE endpoint.
+Take a look at the [example](examples/)
 
-```
-$ npm install
-$ bower install
-$ npm run example
-$ npm run server
-```
 
-Open `http://localhost:8000` in your browser and open the Javascript
-console. Use `curl` or similar to post to the server and the events
-should be shown on the console.
+## Installation
 
 ```
-$ curl -X POST localhost:8000/ping
-$ curl -X POST localhost:8000/event/boop
-$ curl -X POST localhost:8000/event/message
+bower install purescript-server-sent-events
 ```
 
 
-References for SSE
-------------------
+## Documentation
+
+- Module documentation is [published on Pursuit](http://pursuit.purescript.org/packages/purescript-server-sent-events).
+
+
+## References for SSE
 
 - https://developer.mozilla.org/en/docs/Web/API/EventSource
 - https://www.w3schools.com/html/html5_serversentevents.asp

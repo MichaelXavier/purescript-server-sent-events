@@ -41,6 +41,10 @@ exports.readyStateImpl = function(target) {
   return target.readyState;
 };
 
+exports.withCredentialsImpl = function(target) {
+  return target.withCredentials;
+};
+
 exports.urlImpl = function(target) {
   return target.url;
 };

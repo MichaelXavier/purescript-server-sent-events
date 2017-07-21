@@ -1,3 +1,8 @@
+-- | An interface to the Server-Sent Events API (SSE).
+-- |
+-- | Not all browsers support this API. See [Browser Compatibility](https://developer.mozilla.org/en-US/docs/Web/API/EventSource#Browser_compatibility).
+-- |
+-- | [Specification](https://html.spec.whatwg.org/multipage/server-sent-events.html)
 module Network.EventSource
     ( newEventSource
     , addEventListener
@@ -8,6 +13,7 @@ module Network.EventSource
     , setOnOpen
     , eventData
     , readyState
+    , withCredentials
     , url
     , close
     , EventSourceConfig(..)
@@ -32,17 +38,22 @@ import Prelude (class Eq, class Show, Unit)
 -------------------------------------------------------------------------------
 
 
--- | EventSource class. Inherits from EventTarget
+-- | EventSource class. Inherits from EventTargetk
+-- | It connects to a server over HTTP and receives events in
+-- | `text/event-stream` format without closing the connection.
 newtype EventSource = EventSource EventTarget
 
 
 -------------------------------------------------------------------------------
+-- | Indicate if CORS should be set to include credentials.
+-- | Default: false
 type EventSourceConfig = {
       withCredentials :: Boolean
     }
 
 
 -------------------------------------------------------------------------------
+-- | The URL of the source e.g. `"/stream"`.
 newtype URL = URL String
 
 derive newtype instance showURL :: Show URL
@@ -50,10 +61,10 @@ derive newtype instance eqURL :: Eq URL
 
 
 -------------------------------------------------------------------------------
+-- | Represents the state of the connection.
 data ReadyState = CONNECTING
                 | OPEN
                 | CLOSED
-                | UNKNOWN
 
 derive instance genericReadyState :: Generic ReadyState
 derive instance eqReadyState :: Eq ReadyState
@@ -63,13 +74,29 @@ instance showReadyState :: Show ReadyState where
 
 
 -------------------------------------------------------------------------------
--- | Use UNKNOWN for any unexpected response.
+-- | The state of the EventSource connection.
+-- |
+-- | **CONNECTING** The connection has not yet been established, or it
+-- | was closed and the user agent is reconnecting.
+-- |
+-- | **OPEN** The user agent has an open connection and is dispatching
+-- | as it receives them.
+-- |
+-- | **CLOSED** The connection is not open, and the user agent is not
+-- | trying to reconnect. Either there was a fatal error or the close()
+-- | method was invoked.
 readyState :: EventSource -> ReadyState
 readyState (EventSource target) = case runFn1 readyStateImpl target of
   0 -> CONNECTING
   1 -> OPEN
-  2 -> CLOSED
-  _ -> UNKNOWN
+  _ -> CLOSED
+
+
+-------------------------------------------------------------------------------
+-- | Indicate whether the EventSource object was instantiated with
+-- | CORS credentials set.
+withCredentials :: EventSource -> Boolean
+withCredentials (EventSource target) = runFn1 withCredentialsImpl target
 
 
 -------------------------------------------------------------------------------
@@ -158,6 +185,7 @@ dispatchEvent e (EventSource target) = ET.dispatchEvent e target
 
 
 -------------------------------------------------------------------------------
+-- | Get the data from the event.
 eventData :: Event -> String
 eventData = runFn1 eventDataImpl
 
@@ -191,6 +219,10 @@ foreign import eventDataImpl :: Fn1 Event String
 
 -------------------------------------------------------------------------------
 foreign import readyStateImpl :: Fn1 EventTarget Int
+
+
+-------------------------------------------------------------------------------
+foreign import withCredentialsImpl :: Fn1 EventTarget Boolean
 
 
 -------------------------------------------------------------------------------
