@@ -5,11 +5,9 @@ module Main
 
 
 -------------------------------------------------------------------------------
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, logShow)
-import DOM (DOM)
-import DOM.Event.Event (Event, timeStamp)
-import DOM.Event.Types (EventType(EventType))
+import Effect (Effect)
+import Effect.Class.Console (logShow)
+import Web.Event.Event (Event, EventType(EventType), timeStamp)
 import Data.Maybe (Maybe(Nothing))
 import Data.Tuple (Tuple(Tuple))
 import Network.EventSource (addEventListener, URL(URL), eventData, readyState, setOnError, setOnOpen, setOnMessage, newEventSource, url)
@@ -17,7 +15,7 @@ import Prelude (Unit, bind, discard, (<>), show)
 -------------------------------------------------------------------------------
 
 
-main :: forall eff. Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+main :: Effect Unit
 main = do
   es <- newEventSource (URL "/stream") Nothing
   logShow (readyState es)
@@ -29,25 +27,25 @@ main = do
 
 
 -------------------------------------------------------------------------------
-handleOpen :: forall eff. Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+handleOpen :: Event -> Effect Unit
 handleOpen ev = logShow ("Connection is open (" <> show (timeStamp ev) <> ").")
 
 
 -------------------------------------------------------------------------------
-handleError :: forall eff. Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+handleError :: Event -> Effect Unit
 handleError ev = logShow ("EventSource failed (" <> show (timeStamp ev) <> ").")
 
 
 -------------------------------------------------------------------------------
-handleMessage :: forall eff. Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+handleMessage :: Event -> Effect Unit
 handleMessage = handle "message"
 
 
 -------------------------------------------------------------------------------
-handleBoop :: forall eff. Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+handleBoop :: Event -> Effect Unit
 handleBoop = handle "boop"
 
 
 -------------------------------------------------------------------------------
-handle :: forall eff. String -> Event -> Eff (dom :: DOM, console :: CONSOLE | eff) Unit
+handle :: String -> Event -> Effect Unit
 handle tag e = logShow (Tuple tag (eventData e))
