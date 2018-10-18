@@ -38,7 +38,9 @@ exports.eventDataImpl = function(event) {
 };
 
 exports.readyStateImpl = function(target) {
-  return target.readyState;
+  return function() {
+    return target.readyState;
+  };
 };
 
 exports.withCredentialsImpl = function(target) {
