@@ -29,7 +29,7 @@ import Data.Function.Uncurried (runFn2, runFn1, Fn2, Fn1)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe(Just, Nothing))
-import Prelude (class Eq, class Show, Unit, bind, (=<<))
+import Prelude (class Eq, class Show, Unit, bind, pure, (=<<))
 import Web.Event.Event (Event, EventType)
 import Web.Event.EventTarget (EventListener, eventListener, EventTarget)
 import Web.Event.EventTarget as ET
@@ -83,11 +83,13 @@ instance showReadyState :: Show ReadyState where
 -- | **CLOSED** The connection is not open, and the user agent is not
 -- | trying to reconnect. Either there was a fatal error or the close()
 -- | method was invoked.
-readyState :: EventSource -> ReadyState
-readyState (EventSource target) = case runFn1 readyStateImpl target of
-  0 -> CONNECTING
-  1 -> OPEN
-  _ -> CLOSED
+readyState :: EventSource -> Effect ReadyState
+readyState (EventSource target) = do
+  state <- runFn1 readyStateImpl target
+  pure case state of
+    0 -> CONNECTING
+    1 -> OPEN
+    _ -> CLOSED
 
 
 -------------------------------------------------------------------------------
@@ -218,7 +220,7 @@ foreign import eventDataImpl :: Fn1 Event String
 
 
 -------------------------------------------------------------------------------
-foreign import readyStateImpl :: Fn1 EventTarget Int
+foreign import readyStateImpl :: Fn1 EventTarget (Effect Int)
 
 
 -------------------------------------------------------------------------------
