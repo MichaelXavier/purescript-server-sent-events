@@ -18,7 +18,8 @@ import Prelude (Unit, bind, discard, (<>), show)
 main :: Effect Unit
 main = do
   es <- newEventSource (URL "/stream") Nothing
-  logShow (readyState es)
+  rs <- readyState es
+  logShow rs
   logShow (url es)
   setOnOpen es handleOpen
   setOnError es handleError
