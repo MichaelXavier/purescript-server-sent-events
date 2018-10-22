@@ -23,13 +23,14 @@
     "output"
   ],
   "dependencies": {
-    "purescript-functions": "^3.0.0",
-    "purescript-maybe": "^3.0.0",
-    "purescript-dom": "^4.5.0",
-    "purescript-prelude": "^3.1.0"
+    "purescript-effect": "^2.0.0",
+    "purescript-functions": "^4.0.0",
+    "purescript-generics-rep": "^6.0.0",
+    "purescript-maybe": "^4.0.0",
+    "purescript-prelude": "^4.0.1",
+    "purescript-web-events": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-console": "^3.0.0",
-    "purescript-psci-support": "^3.0.0"
+    "purescript-console": "^4.0.0"
   }
 }

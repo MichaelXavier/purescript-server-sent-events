@@ -1,6 +1,6 @@
 {
   "name": "purescript-server-sent-events",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "A purescript interface to the Server-Sent Events API (SSE).",
   "main": "server.js",
   "directories": {
@@ -12,11 +12,18 @@
     "example": "pulp build -I examples && pulp browserify --to output/index.js",
     "watch_example": "pulp --watch --then \"pulp browserify --to output/index.js\" build -I examples",
     "watch": "pulp --watch build",
-    "server": "node examples/server.js"
+    "server": "node examples/server.js",
+    "psc-package:install": "psc-package install",
+    "bower:install": "bower install"
   },
   "author": "Michael Xavier",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "bower": "^1.8.4",
+    "psc-package": "^0.3.2",
+    "pulp": "^12.3.0",
+    "purescript": "^0.12.0"
+  },
   "devDependencies": {
     "express": "^4.15.3",
     "express-sse": "^0.4.1",
