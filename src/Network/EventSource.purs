@@ -27,7 +27,7 @@ module Network.EventSource
 import Effect
 import Data.Function.Uncurried (runFn2, runFn1, Fn2, Fn1)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+import Data.Show.Generic (genericShow)
 import Data.Maybe (Maybe(Just, Nothing))
 import Prelude (class Eq, class Show, Unit, bind, pure, (=<<))
 import Web.Event.Event (Event, EventType)
