@@ -1,4 +1,6 @@
-{ name = "purescript-server-sent-events"
+{ name = "server-sent-events"
+, license = "MIT"
+, repository = "https://github.com/MichaelXavier/purescript-server-sent-events"
 , dependencies =
   [ "console"
   , "effect"
