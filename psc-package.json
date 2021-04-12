@@ -1,13 +1,12 @@
 {
     "name": "purescript-server-sent-events",
-    "set": "psc-0.12.0",
+    "set": "psc-0.14.0",
     "source": "https://github.com/purescript/package-sets.git",
     "depends": [
         "console",
         "effect",
         "functions",
-        "generics-rep",
-	"maybe",
+        "maybe",
         "prelude",
         "web-events"
     ]
