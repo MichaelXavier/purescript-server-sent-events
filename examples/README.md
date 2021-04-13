@@ -6,7 +6,6 @@ and start a server with a SSE endpoint.
 
 ```
 $ npm install
-$ bower install
 $ npm run example
 $ npm run server
 ```

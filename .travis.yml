@@ -2,10 +2,9 @@ language: node_js
 node_js:
   - "stable"
 before_install:
-  - npm install -g bower pulp purescript spago
+  - npm install -g purescript spago
   - purs --version
   - spago --version
 script:
-  - spago test
-  - npm run-script example
+  - npm run example
 sudo: false

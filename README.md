@@ -13,7 +13,7 @@ Take a look at the [example](examples/)
 ## Installation
 
 ```
-bower install purescript-server-sent-events
+spago install server-sent-events
 ```
 
 
