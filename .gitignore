@@ -1,5 +1,6 @@
+/.spago/
+/bower_components/
+/generated-docs/
 /node_modules/
 /output/
-/generated-docs/
-/.spago/
 /package-lock.json
